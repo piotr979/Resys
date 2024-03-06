@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+
+<div class="[&>*]:block">
+	{{ form_label(form.firstName) }}
+	{{ form_widget(form.firstName, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
+	{{ form_label(form.lastName) }}
+	{{ form_widget(form.lastName, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
+	{{ form_label(form.phone) }}
+	{{ form_widget(form.phone, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
+	{{ form_label(form.email) }}
+	{{ form_widget(form.email, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="flex flex-row mt-4 space-x-4">
+	{{ form_row(form.submit) }}
+	{{ form_row(form.cancel, { 'attr': {'class': 'button button-neutral' }}) }}
+
+</div>
+{{ form_end(form) }}

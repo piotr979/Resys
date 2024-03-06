@@ -1,0 +1,106 @@
+{% extends 'admin/base.html.twig' %}
+{% import "admin/macros/sort-link.html.twig" as sortLink %}
+{% block title %}Customers list
+{% endblock %}
+
+{% block body %}
+
+	<div class="flex flex-row justify-between">
+		<h1 class="page-title font-bold">Customers</h1>
+		<a href="{{ path('customer_new') }}" class="button button-primary">Add new customer</a>
+	</div>
+	{% for message in app.flashes('notice') %}
+		<div class="flash-notice">
+			{{ message }}
+		</div>
+	{% endfor %}
+	{% if pagesAmount == 0 %}
+		<p class="mt-4">No customers have been added yet.</p>
+	{% else %}
+		<div class="rounded-lg border border-gray-200 mt-4">
+			<div class="overflow-x-auto rounded-t-lg">
+				<table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm overflow-x-auto">
+					<thead class="ltr:text-left rtl:text-right">
+						<tr class="h-8">
+							<th>
+								{{ sortLink.sortLink('No.', 'id', 'rooms_list', sortColumn, orderBy) }}
+							</th>
+							<th>
+								{{ sortLink.sortLink('First name', 'firstName', 'customers_list', sortColumn, orderBy) }}
+							</th>
+							<th>
+								{{ sortLink.sortLink('Last name', 'lastName', 'customers_list', sortColumn, orderBy) }}
+							</th>
+							<th class="hidden sm:table-cell">
+								{{ sortLink.sortLink('Email', 'email', 'customers_list', sortColumn, orderBy) }}
+							</th>
+							<th class="hidden md:table-cell">
+								{{ sortLink.sortLink('Phone', 'phone', 'customers_list', sortColumn, orderBy) }}
+							</th>
+							<th>Operations</th>
+						</tr>
+					</thead>
+
+					<tbody class="divide-y divide-gray-200">
+						{% if currentPage > 1 %}
+							{% set customerIndex = ((currentPage * 10) - 9) %}
+						{% else %}
+							{% set customerIndex = 1 %}
+						{% endif %}
+						{% for customer in customers %}
+							<tr class="text-center h-12">
+								<td>{{ customerIndex }}</td>
+								<td>{{ customer.firstName }}</td>
+								<td>{{ customer.lastName }}</td>
+								<td class="hidden sm:table-cell">{{ customer.email }}</td>
+								<td class="hidden md:table-cell">{{ customer.phone }}</td>
+								<td>
+									<div class="flex flex-row space-x-4 mt-0.5 justify-center content-center">
+										<button class="button-small button-warning delete-button" data-id="{{ customer.id }}" data-entity="customers">Remove</button>
+										<a class="button-small button-primary" href="{{ path('room_edit', { id: customer.id, currentPage: currentPage })}}">Edit</a>
+									</div>
+								</td>
+							</tr>
+							{% set customerIndex = customerIndex + 1 %}
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="rounded-b-lg border-t border-gray-200 px-4 py-2">
+				<ol class="flex justify-center gap-1 text-xs font-medium">
+					{% if pagesAmount > 1 %}
+						<li>
+							<a href="#" class="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180">
+								<span class="sr-only">Prev Page</span>
+								<svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewbox="0 0 20 20" fill="currentColor">
+									<path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+								</svg>
+							</a>
+						</li>
+					{% endif %}
+					{% for page in range(1, pagesAmount) %}
+						<li>
+							<a href="{{ path('customers_list', { page: page, sortColumn: sortColumn, orderBy: orderBy })}}" class="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900">
+								<p class="{{ page == currentPage ? 'font-bold' : '' }}">{{ page }}</p>
+							</a>
+						</li>
+					{% endfor %}
+
+
+					{% if pagesAmount > 1 %}
+						<li>
+							<a href="#" class="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180">
+								<span class="sr-only">Next Page</span>
+								<svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewbox="0 0 20 20" fill="currentColor">
+									<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+								</svg>
+							</a>
+						</li>
+					{% endif %}
+				</ol>
+			</div>
+		</div>
+	{% endif %}
+	{{ include('admin/partials/modal-confirm.html.twig', { message: 'Are you sure you want to delete this customer?' }) }}
+{% endblock %}

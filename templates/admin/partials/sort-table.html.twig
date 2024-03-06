@@ -1,0 +1,8 @@
+{% if column == sortColumn %}
+	{% if orderBy == 'asc' %}
+		{% set arrowIcon = '&uarr;' %}
+	{% elseif orderBy == 'desc' %}
+		{% set arrowIcon = '&darr;' %}
+	{% endif %}
+	{{ arrowIcon|raw }}
+{% endif %}

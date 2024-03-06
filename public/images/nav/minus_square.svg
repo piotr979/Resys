@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>edit / minus_square</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="24" height="24"></rect>
+    </defs>
+    <g id="💙-coolicons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Edit" transform="translate(-43.000000, -163.000000)">
+            <g id="edit-/-minus_square" transform="translate(40.000000, 160.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="edit-/-minus_square-(Background/Mask)"></g>
+                <path d="M19,3 L5,3 C3.88999999,3 3,3.89999998 3,5 L3,19 C3,20.1000004 3.88999999,21 5,21 L19,21 C20.1000004,21 21,20.1000004 21,19 L21,5 C21,3.89999998 20.1000004,3 19,3 L19,3 Z M19,19 L5,19 L5,5 L19,5 L19,19 L19,19 Z M17,11 L17,13 L7,13 L7,11 L17,11 L17,11 Z" fill="#FFFFFF" mask="url(#mask-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,29 @@
+{{ form_start(form) }}
+
+	<div class="[&>*]:block">
+		{{ form_label(form.size) }}
+		{{ form_widget(form.size, { 'attr': { 'class': 'input-default w-fit' }}) }}
+	</div>
+	<div class="[&>*]:block">
+		{{ form_label(form.persons) }}
+		{{ form_widget(form.persons, { 'attr': { 'class': 'input-default' }}) }}
+	</div>
+	<div class="block mb-2">
+		{{ form_widget(form.bathroom) }}
+		{{ form_label(form.bathroom) }}
+	</div>
+	<div class="block mb-2">
+		{{ form_widget(form.balcony) }}
+		{{ form_label(form.balcony) }}
+	</div>
+	<div class="block">
+		{{ form_widget(form.fridge) }}
+		{{ form_label(form.fridge) }}
+	</div>
+
+    <div class="flex flex-row mt-4 space-x-4">
+        {{ form_row(form.submit) }}
+        {{ form_row(form.cancel, { 'attr': {'class': 'button button-neutral' }}) }}
+
+        </div>
+	{{ form_end(form) }}

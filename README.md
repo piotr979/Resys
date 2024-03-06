@@ -1,0 +1,1 @@
+Init version of B&B Booking system based on Symfony.

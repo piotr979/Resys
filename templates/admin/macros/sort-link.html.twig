@@ -1,0 +1,4 @@
+{% macro sortLink(text, column, path, sortColumn, orderBy ) %}
+	<a href="{{ path(path, { sortColumn: column , orderBy: orderBy == 'asc' ? 'desc' : 'asc' }) }}" class="{{ column == sortColumn ? 'text-red-700' : '' }}">{{ text }}
+		{% include 'admin/partials/sort-table.html.twig' with { column: column, sortColumn: sortColumn, orderBy: orderBy } %}</a>
+{% endmacro %}

@@ -1,0 +1,77 @@
+<!-- NAVIGATOR OPEN/CLOSE BUTTON STARTS HERE -->
+<input type="checkbox" class="navigator-checkbox" id="navigator-check" checked="checked">
+<label for="navigator-check">
+	<image src="{{ asset('images/nav/hamburger.svg') }}" id="open-sidebar" alt="open sidebar">
+	<image src="{{ asset('images/nav/minus_square.svg') }}" id="close-sidebar" alt="close sidebar">
+</label>
+<!-- NAVIGATOR OPEN/CLOSE BUTTON ENDS HERE -->
+
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+<!-- NAVIGATOR SIDEBAR STARTS HERE -->
+<div id="navigator-sidebar" class="navigator-sidebar bg-menu-background">
+	<div class="sidebar-wrapper h-full">
+		<h2 class="text-white text-2xl uppercase font-bold">B&amp;B Resys</h2>
+		<nav class="mt-8 h-full">
+			<ul class="flex flex-col content-between space-y-16 h-full">
+				<li class="block max-w-48">
+					<ul>
+						<a href="{{ path('dashboard') }}" class="nav-menu-item {{ currentRoute == 'dashboard' ? 'bg-indigo-950' : ''}}">
+							<li class="flex flex-row content-start space-x-2">
+								<img src="{{ asset('images/nav/icons/gauge.svg') }}" alt="icon"/>
+								<p class="text-white font-pgraph text-sm font-medium">Dashboard</p>
+							</li>
+						</a>
+						<a href="" class="nav-menu-item {{ currentRoute == 'reservations_list' ? 'bg-indigo-950' : ''}}">
+							<li class="flex flex-row space-x-2">
+								<img src="{{ asset('images/nav/icons/calendar.svg') }}" alt="icon"/>
+								<p class="text-white font-pgraph text-sm font-medium">Reservations</p>
+							</li>
+						</a>
+
+						<a href="{{ path('customers_list', { page: 1 }) }}" class="nav-menu-item {{ currentRoute == 'customers_list' ? 'bg-indigo-950' : ''}}">
+							<li class="flex flex-row space-x-2 content-start">
+								<img class="w-4 h-auto" src="{{ asset('images/nav/icons/customers.svg') }}" alt="icon"/>
+								<p class="text-white font-pgraph text-sm font-medium">Customers</p>
+							</li>
+						</a>
+
+						<a href="{{ path('rooms_list', { page: 1 } )}}" class="nav-menu-item {{ currentRoute == 'rooms_list' ? 'bg-indigo-950' : ''}}">
+							<li class="flex flex-row space-x-2 content-start">
+								<img class="w-4 h-auto" src="{{ asset('images/nav/icons/rooms.svg') }}" alt="icon"/>
+								<p class="text-white font-pgraph text-sm font-medium">Rooms</p>
+							</li>
+						</a>
+					</ul>
+				</li>
+				<li class="max-w-48">
+					<ul>
+						<a href="" class="nav-menu-item {{ currentRoute == 'settings' ? 'bg-indigo-950' : ''}}">
+							<li class="flex flex-row space-x-2 content-start">
+								<img class="w-4 h-auto" src="{{ asset('images/nav/icons/rooms.svg') }}" alt="icon"/>
+								<p class="text-white font-pgraph text-sm font-medium">Settings</p>
+							</li>
+						</a>
+
+						<a href="" class="nav-menu-item">
+							<li class="flex flex-row space-x-2 content-start">
+								<img class="w-4 h-auto" src="{{ asset('images/nav/icons/rooms.svg') }}" alt="icon"/>
+								<p class="text-white font-pgraph text-sm font-medium">Log out</p>
+							</li>
+						</a>
+
+					</ul>
+
+				</li>
+			</ul>
+
+		</nav>
+	</div>
+</div>
+<!-- NAVIGATOR SIDEBAR ENDS HERE -->
+
+<!-- CONTENT STARTS HERE -->
+<div class="navigator-text--container">
+	<div class="navigator-sidebar--dummy"></div>
+	<div class="navigator-text--content">
+		<div class="mt-12"> {% block body %}{% endblock %}

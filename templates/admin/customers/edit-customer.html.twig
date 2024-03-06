@@ -1,0 +1,9 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+	Edit room
+{% endblock %}
+{% block body %}
+	<h2 class="page-title my-4">Edit customer</h2>
+	{{ include('admin/customers/partials/form-customer.html.twig', { 'form': form }) }}
+{% endblock %}
