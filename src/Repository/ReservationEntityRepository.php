@@ -20,7 +20,24 @@ class ReservationEntityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ReservationEntity::class);
     }
-
+    public function findReservationsByPage(int $page, string $sortColumn, string $asc): array
+    {
+        return $this->createQueryBuilder('res')
+                ->orderBy('res.' . $sortColumn, $asc == 'asc' ? 'ASC' : 'DESC')
+                ->setMaxResults(10)
+                ->setFirstResult(($page * 10) -10 )
+                ->setMaxResults(10)
+                ->getQuery()
+                ->getResult()
+                ;
+    }
+    public function getAmount() {
+        return $this->createQueryBuilder('res')
+            ->select('count(res.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
     //    /**
     //     * @return ReservationEntity[] Returns an array of ReservationEntity objects
     //     */

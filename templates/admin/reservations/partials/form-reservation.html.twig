@@ -1,0 +1,36 @@
+{{ form_start(form) }}
+
+<div class="[&>*]:block">
+	{{ form_label(form.dateFrom,) }}
+	{{ form_widget(form.dateFrom, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
+	{{ form_label(form.dateTo) }}
+	{{ form_widget(form.dateTo, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
+	{{ form_label(form.adults) }}
+	{{ form_widget(form.adults, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
+	{{ form_label(form.children) }}
+	{{ form_widget(form.children, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
+	{{ form_label(form.notice) }}
+	{{ form_widget(form.notice, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
+	{{ form_label(form.status) }}
+	{{ form_widget(form.status, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="block">
+	{{ form_widget(form.breakfast) }}
+	{{ form_label(form.breakfast) }}
+</div>
+<div class="flex flex-row mt-4 space-x-4">
+	{{ form_row(form.submit) }}
+	{{ form_row(form.cancel, { 'attr': {'class': 'button button-neutral' }}) }}
+
+</div>
+{{ form_end(form) }}

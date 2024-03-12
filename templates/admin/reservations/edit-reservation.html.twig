@@ -1,0 +1,9 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+	Edit reservation
+{% endblock %}
+{% block body %}
+	<h2 class="page-title my-4">Edit reservation</h2>
+	{{ include('admin/reservations/partials/form-reservation.html.twig', { 'form': form }) }}
+{% endblock %}

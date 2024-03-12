@@ -22,7 +22,7 @@
 								<p class="text-white font-pgraph text-sm font-medium">Dashboard</p>
 							</li>
 						</a>
-						<a href="" class="nav-menu-item {{ currentRoute == 'reservations_list' ? 'bg-indigo-950' : ''}}">
+						<a href="{{ path('reservations_list') }}" class="nav-menu-item {{ currentRoute == 'reservations_list' ? 'bg-indigo-950' : ''}}">
 							<li class="flex flex-row space-x-2">
 								<img src="{{ asset('images/nav/icons/calendar.svg') }}" alt="icon"/>
 								<p class="text-white font-pgraph text-sm font-medium">Reservations</p>
