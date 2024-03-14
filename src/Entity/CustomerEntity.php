@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CustomerEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CustomerEntityRepository::class)]
@@ -29,6 +30,9 @@ class CustomerEntity
 
     #[ORM\OneToMany(targetEntity: ReservationEntity::class, mappedBy: 'customer', orphanRemoval: true)]
     private Collection $reservations;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date_created = null;
 
     public function __construct()
     {
@@ -114,6 +118,18 @@ class CustomerEntity
                 $reservation->setCustomer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateCreated(): ?\DateTimeInterface
+    {
+        return $this->date_created;
+    }
+
+    public function setDateCreated(\DateTimeInterface $date_created): static
+    {
+        $this->date_created = $date_created;
 
         return $this;
     }

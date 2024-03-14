@@ -39,6 +39,9 @@ class ReservationEntity
     #[ORM\JoinColumn(nullable: false)]
     private ?CustomerEntity $customer = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date_created = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +139,18 @@ class ReservationEntity
     public function setCustomer(?CustomerEntity $customer): static
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getDateCreated(): ?\DateTimeInterface
+    {
+        return $this->date_created;
+    }
+
+    public function setDateCreated(\DateTimeInterface $date_created): static
+    {
+        $this->date_created = $date_created;
 
         return $this;
     }

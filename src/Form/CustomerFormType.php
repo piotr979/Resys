@@ -46,6 +46,7 @@ class CustomerFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CustomerEntity::class,
+            'currentPage' => null,
         ]);
     }
 }

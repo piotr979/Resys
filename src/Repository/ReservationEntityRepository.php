@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\ReservationEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
+use DateTime;
 /**
  * @extends ServiceEntityRepository<ReservationEntity>
  *
@@ -38,6 +38,26 @@ class ReservationEntityRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
             ;
     }
+    public function getReservationsMonthlyByDate()
+    {
+        $data = [];
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT MONTH(date_created) AS months, COUNT(*) AS amounts 
+        FROM reservation_entity
+        GROUP BY MONTH(date_created)";
+        $resultSet = $conn->executeQuery($sql);
+        $results =  $resultSet->fetchAllAssociative();
+        /**
+         * https://stackoverflow.com/a/18467892/1496972
+         */
+        foreach ($results as $result) {
+            $dateObj = DateTime::createFromFormat('!m', (string) $result['months']);
+            $monthName = $dateObj->format('F');
+            $data[$monthName] = $result['amounts'];
+        }
+        return($data);
+    }
+
     //    /**
     //     * @return ReservationEntity[] Returns an array of ReservationEntity objects
     //     */

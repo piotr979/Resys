@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\RoomEntityRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RoomEntityRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class RoomEntity
 {
     #[ORM\Id]
@@ -27,6 +29,9 @@ class RoomEntity
 
     #[ORM\Column]
     private ?bool $fridge = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date_created = null;
 
     public function getId(): ?int
     {
@@ -91,5 +96,16 @@ class RoomEntity
         $this->fridge = $fridge;
 
         return $this;
+    }
+
+    public function getDateCreated(): ?\DateTimeInterface
+    {
+        return $this->date_created;
+    }
+
+    #[ORM\PrePersist]
+    public function setDateCreated(): void
+    {
+        $this->date_created = new \DateTime();
     }
 }

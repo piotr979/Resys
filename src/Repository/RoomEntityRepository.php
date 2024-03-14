@@ -39,6 +39,7 @@ class RoomEntityRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+    
     //    /**
     //     * @return RoomEntity[] Returns an array of RoomEntity objects
     //     */

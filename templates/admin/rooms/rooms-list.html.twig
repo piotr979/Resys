@@ -40,6 +40,9 @@
 							<th class="hidden md:table-cell">
 								{{ sortLink.sortLink('Fridge', 'fridge', 'rooms_list', sortColumn, orderBy) }}
 							</th>
+							<th class="hidden md:table-cell">
+								{{ sortLink.sortLink('Date created', 'date_created', 'rooms_list', sortColumn, orderBy) }}
+							</th>
 							<th>Operations</th>
 						</tr>
 					</thead>
@@ -54,6 +57,7 @@
 								<td class="hidden sm:table-cell">{{ room.bathroom ? 'Yes' : 'No' }}</td>
 								<td class="hidden md:table-cell">{{ room.balcony ? 'Yes' : 'No' }}</td>
 								<td class="hidden md:table-cell">{{ room.fridge ? 'Yes': 'No' }}</td>
+								<td class="hidden md:table-cell">{{ room.dateCreated|date("m/d/Y") }}</td>
 								<td>
 									<div class="flex flex-row space-x-4 mt-0.5 justify-center content-center">
 										<button class="button-small button-warning delete-button" data-id="{{ room.id }}" data-entity="room">Remove</button>

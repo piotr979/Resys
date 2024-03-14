@@ -35,7 +35,7 @@
 								{{ sortLink.sortLink('Email', 'email', 'customers_list', sortColumn, orderBy) }}
 							</th>
 							<th class="hidden md:table-cell">
-								{{ sortLink.sortLink('Phone', 'phone', 'customers_list', sortColumn, orderBy) }}
+								{{ sortLink.sortLink('Date created', 'date_created', 'customers_list', sortColumn, orderBy) }}
 							</th>
 							<th>Operations</th>
 						</tr>
@@ -53,11 +53,11 @@
 								<td>{{ customer.firstName }}</td>
 								<td>{{ customer.lastName }}</td>
 								<td class="hidden sm:table-cell">{{ customer.email }}</td>
-								<td class="hidden md:table-cell">{{ customer.phone }}</td>
+								<td class="hidden md:table-cell">{{ customer.dateCreated|date("m/d/Y") }}</td>
 								<td>
 									<div class="flex flex-row space-x-4 mt-0.5 justify-center content-center">
 										<button class="button-small button-warning delete-button" data-id="{{ customer.id }}" data-entity="customers">Remove</button>
-										<a class="button-small button-primary" href="{{ path('room_edit', { id: customer.id, currentPage: currentPage })}}">Edit</a>
+										<a class="button-small button-primary" href="{{ path('customer_edit', { id: customer.id, currentPage: currentPage })}}">Edit</a>
 									</div>
 								</td>
 							</tr>

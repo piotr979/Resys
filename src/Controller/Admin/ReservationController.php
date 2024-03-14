@@ -42,8 +42,8 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $reservation = $form->getData();
+            dump($reservation);die();
             $this->entityManager->persist($reservation);
             $this->entityManager->flush();
             return $this->redirectToRoute('reservations_list');

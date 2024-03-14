@@ -1,5 +1,4 @@
 {{ form_start(form) }}
-
 <div class="[&>*]:block">
 	{{ form_label(form.dateFrom,) }}
 	{{ form_widget(form.dateFrom, { 'attr': { 'class': 'input-default w-fit' }}) }}
@@ -17,9 +16,14 @@
 	{{ form_widget(form.children, { 'attr': { 'class': 'input-default w-fit' }}) }}
 </div>
 <div class="[&>*]:block">
+	{{ form_label(form.customer) }}
+	{{ form_widget(form.customer, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
 	{{ form_label(form.notice) }}
 	{{ form_widget(form.notice, { 'attr': { 'class': 'input-default w-fit' }}) }}
 </div>
+
 <div class="[&>*]:block">
 	{{ form_label(form.status) }}
 	{{ form_widget(form.status, { 'attr': { 'class': 'input-default w-fit' }}) }}

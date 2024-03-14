@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\CustomerEntity;
 use App\Entity\ReservationEntity;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,6 +34,11 @@ class ReservationFormType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('adults')
+            ->add('customer', EntityType::class, [
+                'required' => true,
+                'class' => CustomerEntity::class,
+                'choice_label' => 'lastName',
+            ])
             ->add('status', ChoiceType::class, [
                 'choices' => [
                     'Booked' => 0,
@@ -42,6 +49,7 @@ class ReservationFormType extends AbstractType
                 ]
             ])
             ->add('notice', TextareaType::class, [
+                'required' => false,
                 'attr' => [
                     'maxlength' => 255,
                 ]
