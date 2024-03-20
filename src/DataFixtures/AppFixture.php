@@ -3,6 +3,7 @@ namespace App\DataFixtures;
 
 use App\Entity\CustomerEntity;
 use App\Entity\ReservationEntity;
+use App\Entity\RoomEntity;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -14,7 +15,20 @@ class AppFixture extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        // Create 20 customers
+        // Create rooms
+        for ($k = 0; $k < 25; $k++) {
+            $room = new RoomEntity();
+            $room->setBathroom((bool)mt_rand(0, 1)); // Random bathroom availability
+            $room->setSize(mt_rand(10, 50)); // Random room size
+            $room->setPersons(mt_rand(1, 6)); // Random number of persons (1-6)
+            $room->setBalcony((bool)mt_rand(0, 1)); // Random balcony availability
+            $room->setFridge((bool)mt_rand(0, 1)); // Random fridge availability
+            $room->setPriceWeekday(mt_rand(50, 100)); // Random weekday price (50-100)
+            $room->setPriceWeekend(mt_rand(100, 150)); // Random weekend price (100-150)
+            $manager->persist($room);
+        }
+
+        // Create customers
         for ($i = 0; $i < 20; $i++) {
             $customer = new CustomerEntity();
             $customer->setFirstName($this->firstNames[array_rand($this->firstNames)]); // Random first name from the array

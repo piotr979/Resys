@@ -8,6 +8,14 @@
 		{{ form_label(form.persons) }}
 		{{ form_widget(form.persons, { 'attr': { 'class': 'input-default' }}) }}
 	</div>
+	<div class="[&>*]:block">
+		{{ form_label(form.price_weekday) }}
+		{{ form_widget(form.price_weekday, { 'attr': { 'class': 'input-default' }}) }}
+	</div>
+	<div class="[&>*]:block">
+		{{ form_label(form.price_weekend) }}
+		{{ form_widget(form.price_weekend, { 'attr': { 'class': 'input-default' }}) }}
+	</div>
 	<div class="block mb-2">
 		{{ form_widget(form.bathroom) }}
 		{{ form_label(form.bathroom) }}

@@ -35,6 +35,8 @@ class RoomFormType extends AbstractType
                     'class' => 'button button-primary',
                 ]
             ])
+            ->add('price_weekday')
+            ->add('price_weekend')
             ->add('cancel', ButtonType::class, [
                 'label' => 'Cancel',
                 'attr' => [

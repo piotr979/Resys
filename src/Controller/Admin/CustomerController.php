@@ -44,6 +44,7 @@ class CustomerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $customer = $form->getData();
+            $customer->setDateCreated(new \DateTime('now'));
             $this->entityManager->persist($customer);
             $this->entityManager->flush();
             return $this->redirectToRoute('customers_list');
@@ -88,5 +89,17 @@ class CustomerController extends AbstractController
         $this->entityManager->flush();
         $this->addFlash('notice', 'Customer has been removed.');
         return $this->redirectToRoute('customers_list');
+    }
+    #[Route('customer-details/{id}/{currentPage}', name: 'customer_details',
+        defaults: [
+            'currentPage' => 1,
+        ])]
+    public function customerDetails(int $id, int $currentPage): Response
+    {
+        $details = $this->entityManager->getRepository(CustomerEntity::class)->find($id);
+        return $this->render('admin/customers/customer-details.html.twig', [
+            'details' => $details,
+            'currentPage' => $currentPage,
+        ]);
     }
 }

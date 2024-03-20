@@ -16,11 +16,12 @@ class RoomController extends AbstractController
     public function __construct(private EntityManagerInterface $entityManager)
     {
     }
-    #[Route('/rooms-list/{page}/{sortColumn}/{orderBy}', name: 'rooms_list', 
-    defaults: [
-        'page' => '1',
-        'sortColumn' => 'id',
-        'orderBy' => 'asc'])]
+    #[Route('/rooms-list/{page}/{sortColumn}/{orderBy}', name: 'rooms_list',
+        defaults: [
+            'page' => '1',
+            'sortColumn' => 'id',
+            'orderBy' => 'asc'
+        ])]
     public function list(int $page, string $sortColumn, string $orderBy): Response
     {
         $amountOfRooms = $this->entityManager->getRepository(RoomEntity::class)->getAmount();
@@ -87,5 +88,17 @@ class RoomController extends AbstractController
         $this->entityManager->flush();
         $this->addFlash('notice', 'Room has been removed.');
         return $this->redirectToRoute('rooms_list');
+    }
+    #[Route('room-details/{id}/{currentPage}', name: 'room_details',
+        defaults: [
+            'currentPage' => 1,
+        ])]
+    public function roomDetails(int $id, int $currentPage): Response
+    {
+        $roomDetails = $this->entityManager->getRepository(RoomEntity::class)->find($id);
+        return $this->render('admin/rooms/room-details.html.twig', [
+            'details' => $roomDetails,
+            'currentPage' => $currentPage,
+        ]);
     }
 }

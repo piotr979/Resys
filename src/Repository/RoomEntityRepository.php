@@ -39,7 +39,31 @@ class RoomEntityRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+    public function checkAnyRoomAvailability(\DateTime $dateFrom, \DateTime $dateTo, int $adults, int $children)
+    {
+        $qb = $this->createQueryBuilder('r');
     
+        // Join with ReservationEntity to check for overlapping reservations
+        $qb->innerJoin('r.reservations', 'res')
+        ->select('r.id')
+           ->andWhere(':dateFrom > res.dateTo OR :dateTo < res.dateFrom')
+           ->setParameter('dateFrom', $dateFrom)
+           ->setParameter('dateTo', $dateTo)
+           ->andWhere('r.size >= :totalPersons')
+           ->setParameter('totalPersons', $adults + $children);
+    
+        // Execute the query
+        $query = $qb->getQuery();
+        $availableRooms = $query->getResult();
+    
+        return $availableRooms;
+    }
+    public function setRoomAvailability(int $id, bool $isTaken, \DateTime $dateFrom, \DateTime $dateTo)
+    {
+
+    }
+
+
     //    /**
     //     * @return RoomEntity[] Returns an array of RoomEntity objects
     //     */

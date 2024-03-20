@@ -5,5 +5,10 @@
 {% endblock %}
 {% block body %}
     <h2 class="page-title my-4">New reservation</h2>
+	{% for message in app.flashes('notice') %}
+		<div class="flash-notice">
+			{{ message }}
+		</div>
+	{% endfor %}
 	{{ include('admin/reservations/partials/form-reservation.html.twig', { 'form': form }) }}
 {% endblock %}

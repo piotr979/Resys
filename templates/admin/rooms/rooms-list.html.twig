@@ -60,8 +60,14 @@
 								<td class="hidden md:table-cell">{{ room.dateCreated|date("m/d/Y") }}</td>
 								<td>
 									<div class="flex flex-row space-x-4 mt-0.5 justify-center content-center">
-										<button class="button-small button-warning delete-button" data-id="{{ room.id }}" data-entity="room">Remove</button>
-										<a class="button-small button-primary" href="{{ path('room_edit', { id: room.id, currentPage: currentPage })}}">Edit</a>
+										<a class="icon-action" href="{{ path('room_details', { id: room.id, currentPage: currentPage })}}">
+										<img src="{{ asset('images/tables/eye.svg') }}">
+										</a>
+										<button class="icon-action delete-button" data-id="{{ room.id }}" data-entity="room">
+										<img src="{{ asset('images/tables/trash-can.svg') }}"></button>
+										<a class="icon-action" href="{{ path('room_edit', { id: room.id, currentPage: currentPage })}}">
+										<img src="{{ asset('images/tables/pencil.svg') }}">
+										</a>
 									</div>
 								</td>
 							</tr>

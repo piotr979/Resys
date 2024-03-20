@@ -6,6 +6,7 @@ use App\Entity\ReservationEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DateTime;
+
 /**
  * @extends ServiceEntityRepository<ReservationEntity>
  *
@@ -23,20 +24,21 @@ class ReservationEntityRepository extends ServiceEntityRepository
     public function findReservationsByPage(int $page, string $sortColumn, string $asc): array
     {
         return $this->createQueryBuilder('res')
-                ->orderBy('res.' . $sortColumn, $asc == 'asc' ? 'ASC' : 'DESC')
-                ->setMaxResults(10)
-                ->setFirstResult(($page * 10) -10 )
-                ->setMaxResults(10)
-                ->getQuery()
-                ->getResult()
-                ;
+            ->orderBy('res.' . $sortColumn, $asc == 'asc' ? 'ASC' : 'DESC')
+            ->setMaxResults(10)
+            ->setFirstResult(($page * 10) - 10)
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
     }
-    public function getAmount() {
+    public function getAmount()
+    {
         return $this->createQueryBuilder('res')
             ->select('count(res.id)')
             ->getQuery()
             ->getSingleScalarResult()
-            ;
+        ;
     }
     public function getReservationsMonthlyByDate()
     {
@@ -46,7 +48,7 @@ class ReservationEntityRepository extends ServiceEntityRepository
         FROM reservation_entity
         GROUP BY MONTH(date_created)";
         $resultSet = $conn->executeQuery($sql);
-        $results =  $resultSet->fetchAllAssociative();
+        $results = $resultSet->fetchAllAssociative();
         /**
          * https://stackoverflow.com/a/18467892/1496972
          */
@@ -56,6 +58,39 @@ class ReservationEntityRepository extends ServiceEntityRepository
             $data[$monthName] = $result['amounts'];
         }
         return($data);
+    }
+    public function checkAnyRoomAvailability(\DateTime $dateFrom, \DateTime $dateTo, int $adults, int $children)
+    {
+        $data = [];
+        $conn = $this->getEntityManager()->getConnection();
+        $rooms = $this->createQueryBuilder('r')
+            ->select('r.id')
+            ->getQuery()
+            ->getResult();
+        foreach ($rooms as $id) {
+            $sql = "
+            SELECT room_entity.id
+            FROM room_entity
+            LEFT JOIN reservation_entity 
+            ON room_entity.id = reservation_entity.room_entity_id
+            AND reservation_entity.date_from < :dateTo
+            AND reservation_entity.date_to > :dateFrom
+            WHERE reservation_entity.room_entity_id IS NULL
+        ";
+            $resultSet = $conn->executeQuery($sql, [
+                'id' => $id['id'],
+                'dateFrom' => $dateFrom->format('Y-m-d'),
+                'dateTo' => $dateTo->format('Y-m-d')
+            ]);
+            $data = $resultSet->fetchAllAssociative();
+
+        }
+        if (isset($data[0])) {
+            return $data[0]['id'];
+        } else {
+            return [];
+        }
+      
     }
 
     //    /**

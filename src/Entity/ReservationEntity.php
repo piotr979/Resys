@@ -42,6 +42,10 @@ class ReservationEntity
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_created = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?RoomEntity $roomEntity = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -151,6 +155,18 @@ class ReservationEntity
     public function setDateCreated(\DateTimeInterface $date_created): static
     {
         $this->date_created = $date_created;
+
+        return $this;
+    }
+
+    public function getRoomEntity(): ?RoomEntity
+    {
+        return $this->roomEntity;
+    }
+
+    public function setRoomEntity(?RoomEntity $roomEntity): static
+    {
+        $this->roomEntity = $roomEntity;
 
         return $this;
     }

@@ -15,7 +15,9 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-
+.table-details tbody tr td:first-child {
+    padding-left: .5rem;
+}
 @layer components {
     .nav-menu-item {
         @apply block mt-2 px-4 py-2 transition-all duration-200 hover:bg-indigo-900 rounded-xl;
@@ -34,6 +36,10 @@ input[type=number] {
     }
     .button-warning {
         @apply bg-red-800 hover:bg-red-600 text-white;
+    }
+    .icon-action {
+        @apply w-6 h-auto transition-all hover:scale-110
+        ; 
     }
     .flash-notice {
         @apply w-full bg-indigo-100 border-indigo-200 border rounded-md text-black my-4 ps-2 py-2;
