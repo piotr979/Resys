@@ -65,7 +65,7 @@
 								<td class="hidden md:table-cell">{{ reservation.customer.firstName }}
 									{{ reservation.customer.lastName }}</td>
 								<td class="hidden md:table-cell">{{ reservation.dateCreated|date("m/d/Y") }}</td>
-								<td class="hidden md:table-cell">
+								<td class="hidden md:table-cell w-32">
 									{{ include('admin/reservations/partials/status.html.twig', { status: reservation.status }) }}
 								</td>
 								<td>

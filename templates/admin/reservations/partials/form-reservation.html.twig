@@ -28,6 +28,10 @@
 	{{ form_label(form.status) }}
 	{{ form_widget(form.status, { 'attr': { 'class': 'input-default w-fit' }}) }}
 </div>
+<div class="[&>*]:block">
+	{{ form_label(form.paid) }}
+	{{ form_widget(form.paid, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
 <div class="block">
 	{{ form_widget(form.breakfast) }}
 	{{ form_label(form.breakfast) }}

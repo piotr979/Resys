@@ -50,4 +50,7 @@ input[type=number] {
     .page-title {
         @apply text-3xl font-bold font-pgraph; 
     }
+    .reservation-status {
+        @apply block py-1 rounded;
+    }
 }

@@ -1,14 +1,14 @@
 {% switch status %}
 	{% case 0 %}
-		<p>Booked</p>
+		<p class="reservation-status bg-green-300">Booked</p>
 	{% case 1 %}
-		<p>In progress</p>
+		<p class="reservation-status bg-amber-300">In progress</p>
 	{% case 2 %}
-		<p>Done</p>
+		<p class="reservation-status bg-blue-300">Done</p>
 	{% case 3 %}
-		<p>Cancelled</p>
+		<p class="reservation-status bg-purple-300">Cancelled</p>
 	{% case 4 %}
-		<p>Rejected</p>
+		<p class="reservation-status bg-rose-300">Rejected</p>
 	{% case 5 %}
-		<p>Never arrived</p>
+		<p class="reservation-status bg-zinc-300">Never arrived</p>
 {% endswitch %}

@@ -45,7 +45,8 @@ class ReservationFormType extends AbstractType
                     'In progress' => 1,
                     'Done' => 2,
                     'Cancelled' => 3,
-                    'Never arrived' => 4,
+                    'Rejected' => 4,
+                    'Never arrived' => 5,
                 ]
             ])
             ->add('notice', TextareaType::class, [
@@ -56,6 +57,12 @@ class ReservationFormType extends AbstractType
             ])
             ->add('children')
             ->add('breakfast')
+            ->add('paid', ChoiceType::class, [
+                'choices' => [
+                    'No' => 0,
+                    'Yes' => 1,
+                ] 
+            ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'button button-primary',

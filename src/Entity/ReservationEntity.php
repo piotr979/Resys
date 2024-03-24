@@ -46,6 +46,12 @@ class ReservationEntity
     #[ORM\JoinColumn(nullable: false)]
     private ?RoomEntity $roomEntity = null;
 
+    #[ORM\Column]
+    private ?int $price = null;
+
+    #[ORM\Column]
+    private ?bool $paid = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -167,6 +173,30 @@ class ReservationEntity
     public function setRoomEntity(?RoomEntity $roomEntity): static
     {
         $this->roomEntity = $roomEntity;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(int $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function isPaid(): ?bool
+    {
+        return $this->paid;
+    }
+
+    public function setPaid(bool $paid): static
+    {
+        $this->paid = $paid;
 
         return $this;
     }
