@@ -39,8 +39,11 @@
 							<th class="hidden md:table-cell">
 								{{ sortLink.sortLink('Customer', 'customer', 'reservations_list', sortColumn, orderBy) }}
 							</th>
-								<th class="hidden md:table-cell">
+							<th class="hidden md:table-cell">
 								{{ sortLink.sortLink('Date created', 'date_created', 'reservations_list', sortColumn, orderBy) }}
+							</th>
+							<th class="hidden md:table-cell">
+								{{ sortLink.sortLink('Status', 'status', 'reservations_list', sortColumn, orderBy) }}
 							</th>
 							<th>Operations</th>
 						</tr>
@@ -59,17 +62,21 @@
 								<td class="hidden sm:table-cell">{{ reservation.dateTo|date('d-m-Y') }}</td>
 								<td class="hidden sm:table-cell">{{ reservation.adults }}</td>
 								<td class="hidden sm:table-cell">{{ reservation.children }}</td>
-								<td class="hidden md:table-cell">{{ reservation.customer.firstName }} {{ reservation.customer.lastName }}</td>
+								<td class="hidden md:table-cell">{{ reservation.customer.firstName }}
+									{{ reservation.customer.lastName }}</td>
 								<td class="hidden md:table-cell">{{ reservation.dateCreated|date("m/d/Y") }}</td>
+								<td class="hidden md:table-cell">
+									{{ include('admin/reservations/partials/status.html.twig', { status: reservation.status }) }}
+								</td>
 								<td>
 									<div class="flex flex-row space-x-4 mt-0.5 justify-center content-center">
 										<a class="icon-action" href="{{ path('reservation_details', { id: reservation.id, currentPage: currentPage })}}">
-										<img src="{{ asset('images/tables/eye.svg') }}">
+											<img src="{{ asset('images/tables/eye.svg') }}">
 										</a>
 										<button class="icon-action delete-button" data-id="{{ reservation.id }}" data-entity="reservations">
-										<img src="{{ asset('images/tables/trash-can.svg') }}"></button>
+											<img src="{{ asset('images/tables/trash-can.svg') }}"></button>
 										<a class="icon-action" href="{{ path('reservation_edit', { id: reservation.id, currentPage: currentPage })}}">
-										<img src="{{ asset('images/tables/pencil.svg') }}">
+											<img src="{{ asset('images/tables/pencil.svg') }}">
 										</a>
 									</div>
 								</td>

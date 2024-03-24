@@ -41,26 +41,19 @@ class RoomEntityRepository extends ServiceEntityRepository
     }
     public function checkAnyRoomAvailability(\DateTime $dateFrom, \DateTime $dateTo, int $adults, int $children)
     {
-        $qb = $this->createQueryBuilder('r');
-    
-        // Join with ReservationEntity to check for overlapping reservations
-        $qb->innerJoin('r.reservations', 'res')
+        $qb = $this->createQueryBuilder('r')
         ->select('r.id')
-           ->andWhere(':dateFrom > res.dateTo OR :dateTo < res.dateFrom')
-           ->setParameter('dateFrom', $dateFrom)
-           ->setParameter('dateTo', $dateTo)
-           ->andWhere('r.size >= :totalPersons')
-           ->setParameter('totalPersons', $adults + $children);
+        ->innerJoin('r.reservations', 'res')
+        ->andWhere('')
+        ->distinct()
+        ->getQuery()
+        ->getResult();
     
-        // Execute the query
-        $query = $qb->getQuery();
-        $availableRooms = $query->getResult();
-    
-        return $availableRooms;
+        return $qb;
     }
     public function setRoomAvailability(int $id, bool $isTaken, \DateTime $dateFrom, \DateTime $dateTo)
     {
-
+         
     }
 
 

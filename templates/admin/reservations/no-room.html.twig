@@ -1,0 +1,21 @@
+{% extends 'admin/base.html.twig' %}
+{% import "admin/macros/sort-link.html.twig" as sortLink %}
+{% block title %}Rooms list
+{% endblock %}
+
+{% block body %}
+	<div class="flex flex-row justify-between">
+		<h1 class="page-title font-bold">Room details</h1>
+		<a href="{{ path('reservation_edit', { id: details.id, currentPage: currentPage }) }}" class="button button-primary">Edit</a>
+	</div>
+	{% for message in app.flashes('notice') %}
+		<div class="flash-notice">
+			{{ message }}
+		</div>
+	{% endfor %}
+	<div class="rounded-lg border border-gray-200 mt-4">
+		<div class="overflow-x-auto rounded-t-lg">
+			<p>No room available, try different date.</p>
+		</div>
+	</div>
+{% endblock %}

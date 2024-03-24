@@ -1,0 +1,14 @@
+{% switch status %}
+	{% case 0 %}
+		<p>Booked</p>
+	{% case 1 %}
+		<p>In progress</p>
+	{% case 2 %}
+		<p>Done</p>
+	{% case 3 %}
+		<p>Cancelled</p>
+	{% case 4 %}
+		<p>Rejected</p>
+	{% case 5 %}
+		<p>Never arrived</p>
+{% endswitch %}

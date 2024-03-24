@@ -26,3 +26,8 @@ services:
     # please note that last definitions always *replace* previous ones
     reservation_manager:
       class: App\Service\ReservationManagerService
+      
+    twig.extension.switch_extension:
+        class: buzzingpixel\twigswitch\SwitchTwigExtension
+        tags:
+            - { name: twig.extension }

@@ -106,7 +106,7 @@ class ReservationController extends AbstractController
         $this->addFlash('notice', 'Reservation has been removed.');
         return $this->redirectToRoute('reservations_list');
     }
-    #[Route('reservation-details/{id}/{currentPage}', name: 'reservation_details',
+    #[Route('/reservation-details/{id}/{currentPage}', name: 'reservation_details',
         defaults: [
             'currentPage' => 1,
         ])]

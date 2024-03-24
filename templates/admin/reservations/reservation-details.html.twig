@@ -1,11 +1,11 @@
 {% extends 'admin/base.html.twig' %}
 {% import "admin/macros/sort-link.html.twig" as sortLink %}
-{% block title %}Rooms list
+{% block title %}Reservation details
 {% endblock %}
 
 {% block body %}
 	<div class="flex flex-row justify-between">
-		<h1 class="page-title font-bold">Room details</h1>
+		<h1 class="page-title font-bold">Reservation details</h1>
 		<a href="{{ path('reservation_edit', { id: details.id, currentPage: currentPage }) }}" class="button button-primary">Edit</a>
 	</div>
 	{% for message in app.flashes('notice') %}

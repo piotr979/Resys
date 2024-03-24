@@ -96,9 +96,11 @@ class CustomerController extends AbstractController
         ])]
     public function customerDetails(int $id, int $currentPage): Response
     {
-        $details = $this->entityManager->getRepository(CustomerEntity::class)->find($id);
+        $customer = $this->entityManager->getRepository(CustomerEntity::class)->find($id);
+        $reservations = $customer->getReservations();
         return $this->render('admin/customers/customer-details.html.twig', [
-            'details' => $details,
+            'details' => $customer,
+            'reservations' => $reservations,
             'currentPage' => $currentPage,
         ]);
     }
