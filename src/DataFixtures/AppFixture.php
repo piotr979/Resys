@@ -1,4 +1,4 @@
-<?php
+<?php 
 namespace App\DataFixtures;
 
 use App\Entity\CustomerEntity;
@@ -16,6 +16,7 @@ class AppFixture extends Fixture
     public function load(ObjectManager $manager)
     {
         // Create rooms
+        $rooms = [];
         for ($k = 0; $k < 25; $k++) {
             $room = new RoomEntity();
             $room->setBathroom((bool)mt_rand(0, 1)); // Random bathroom availability
@@ -26,17 +27,19 @@ class AppFixture extends Fixture
             $room->setPriceWeekday(mt_rand(50, 100)); // Random weekday price (50-100)
             $room->setPriceWeekend(mt_rand(100, 150)); // Random weekend price (100-150)
             $manager->persist($room);
+            $rooms[] = $room;
         }
 
-        // Create customers
+        // Create customers and reservations
         for ($i = 0; $i < 20; $i++) {
             $customer = new CustomerEntity();
             $customer->setFirstName($this->firstNames[array_rand($this->firstNames)]); // Random first name from the array
             $customer->setLastName($this->lastNames[array_rand($this->lastNames)]); // Random last name from the array
             $customer->setEmail(strtolower($customer->getFirstName() . '.' . $customer->getLastName() . '@example.com')); // Generate email based on first and last name
-
-            // Generate date_created in range from 2022 to 2023
             $customer->setDateCreated($this->generateRandomDate('2022-01-01', '2023-12-31'));
+            $customer->setStreetName($this->generateRandomText(20));
+            $customer->setZip($this->generateRandomText(5));
+            $customer->setCity($this->generateRandomText(10));
 
             $manager->persist($customer);
 
@@ -51,11 +54,17 @@ class AppFixture extends Fixture
                 $reservation->setDateFrom($this->generateRandomDate('2023-01-01', '2024-12-31')); // Random date from 2023-2024
                 $reservation->setDateTo($this->generateRandomDate($reservation->getDateFrom()->format('Y-m-d'), '2024-12-31')); // Random date to after date from
                 $reservation->setDateCreated($this->generateRandomDate('2022-01-01', '2023-12-31'));
+                $reservation->setPrice(mt_rand(50, 150)); // Random price
+                $reservation->setPaid(1);
+
+                // Associate reservation with a customer
+                $reservation->setCustomer($customer);
+
+                // Associate reservation with a random room
+                $randomRoom = $rooms[array_rand($rooms)];
+                $reservation->setRoomEntity($randomRoom);
 
                 $manager->persist($reservation);
-                
-                // Associate reservation with the customer
-                $customer->addReservation($reservation);
             }
         }
 
