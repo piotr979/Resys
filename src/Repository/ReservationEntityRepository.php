@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ReservationEntity;
+use App\Entity\RoomEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DateTime;
@@ -57,17 +58,15 @@ class ReservationEntityRepository extends ServiceEntityRepository
             $monthName = $dateObj->format('F');
             $data[$monthName] = $result['amounts'];
         }
-        return($data);
+        return ($data);
     }
-    public function checkAnyRoomAvailability(\DateTime $dateFrom, \DateTime $dateTo, int $adults, int $children)
+    public function checkAnyRoomAvailability(\DateTime $dateFrom, \DateTime $dateTo, int $adults, int $children = 0)
     {
         $data = [];
         $conn = $this->getEntityManager()->getConnection();
-        $rooms = $this->createQueryBuilder('r')
-            ->select('r.id')
-            ->getQuery()
-            ->getResult();
+        $rooms = $this->getEntityManager()->getRepository(RoomEntity::class)->getAllRoomsIds();
         foreach ($rooms as $id) {
+
             $sql = "
             SELECT room_entity.id
             FROM room_entity
@@ -78,43 +77,154 @@ class ReservationEntityRepository extends ServiceEntityRepository
             WHERE reservation_entity.room_entity_id IS NULL
         ";
             $resultSet = $conn->executeQuery($sql, [
-                'id' => $id['id'],
+                'id' => $id,
                 'dateFrom' => $dateFrom->format('Y-m-d'),
                 'dateTo' => $dateTo->format('Y-m-d')
             ]);
             $data = $resultSet->fetchAllAssociative();
-
         }
-        if (isset($data[0])) {
+        if (isset ($data[0])) {
             return $data[0]['id'];
         } else {
             return [];
         }
-      
+    }
+    public function getPastMonthsIncome(int $months = 12): array
+    {
+        $currentYear = date('Y');
+        $currentMonth = date('n');
+        $pastMonthsIncome = [];
+        $startYear = $currentYear;
+        $startMonth = $currentMonth - 11;
+        if ($startMonth <= 0) {
+            $startMonth += 12;
+            $startYear--;
+        }
+
+        for ($i = 0; $i < 12; $i++) {
+            $year = $startYear;
+            $month = $startMonth + $i;
+            if ($month > 12) {
+                $month -= 12;
+                $year++;
+            }
+
+    
+            $income = $this->getMonthlyIncome($year, $month);
+            $monthNameShort = date('M', mktime(0, 0, 0, $month, 1));
+    
+            $pastMonthsIncome[$monthNameShort] = $income;
+        }
+    
+        return $pastMonthsIncome;
+    }
+    
+    private function getMonthlyIncome(int $year, int $month): float
+    {
+        $conn = $this->getEntityManager()->getConnection();
+    
+        $sql = "
+            SELECT SUM(reservation_entity.price) AS monthly_income
+            FROM reservation_entity
+            WHERE YEAR(reservation_entity.date_from) = :year
+            AND MONTH(reservation_entity.date_from) = :month
+        ";
+    
+        $resultSet = $conn->executeQuery($sql, [
+            'year' => $year,
+            'month' => $month,
+        ]);
+    
+        $result = $resultSet->fetchAssociative();
+    
+        return (float) $result['monthly_income'];
+    }
+    
+    public function getPeopleInReservationsMonthly(int $months = 12): array
+    {
+        $currentYear = date('Y');
+        $currentMonth = date('n');
+        $past12MonthsPeople = [];
+
+        // Start from 12 months ago
+        $startYear = $currentYear;
+        $startMonth = $currentMonth - 11;
+        if ($startMonth <= 0) {
+            $startMonth += 12;
+            $startYear--;
+        }
+
+        for ($i = 0; $i < 12; $i++) {
+            $year = $startYear;
+            $month = $startMonth + $i;
+            if ($month > 12) {
+                $month -= 12;
+                $year++;
+            }
+
+            $conn = $this->getEntityManager()->getConnection();
+
+            $sql = "
+            SELECT SUM(res.adults + res.children) AS total_people
+            FROM reservation_entity res
+            WHERE YEAR(res.date_from) = :year
+            AND MONTH(res.date_from) = :month
+        ";
+
+            $resultSet = $conn->executeQuery($sql, [
+                'year' => $year,
+                'month' => $month,
+            ]);
+
+            $result = $resultSet->fetchAssociative();
+            $totalPeople = $result['total_people'] ?? 0;
+
+            $monthNameShort = date('M', mktime(0, 0, 0, $month, 1));
+
+            $past12MonthsPeople[$monthNameShort] = $totalPeople;
+        }
+
+        return $past12MonthsPeople;
     }
 
-    //    /**
-    //     * @return ReservationEntity[] Returns an array of ReservationEntity objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?ReservationEntity
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function getAverageReservationDurationMonthly(int $months = 12): array
+    {
+        $currentYear = date('Y');
+        $currentMonth = date('n');
+        $averageDuration = [];
+    
+        // Start from 12 months ago
+        $startYear = $currentYear;
+        $startMonth = $currentMonth - 11;
+        if ($startMonth <= 0) {
+            $startMonth += 12;
+            $startYear--;
+        }
+    
+        for ($i = 0; $i < $months; $i++) {
+            $year = $startYear;
+            $month = $startMonth + $i;
+            if ($month > 12) {
+                $month -= 12;
+                $year++;
+            }
+    
+            $conn = $this->getEntityManager()->getConnection();
+    
+            $sql = "
+                SELECT AVG(DATEDIFF(res.date_to, res.date_from) + 1) AS average_duration
+                FROM reservation_entity res
+                WHERE YEAR(res.date_from) = :year
+                AND MONTH(res.date_from) = :month
+            ";
+    
+            $resultSet = $conn->executeQuery($sql, [
+                'year' => $year,
+                'month' => $month,
+            ]);
+            $result = $resultSet->fetchAssociative();
+            $averageDuration[date('M', mktime(0, 0, 0, $month, 1))] = round($result['average_duration'] ?? 0, 2);
+        }
+        return $averageDuration;
+    }    
 }

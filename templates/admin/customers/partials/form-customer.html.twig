@@ -16,6 +16,18 @@
 	{{ form_label(form.email) }}
 	{{ form_widget(form.email, { 'attr': { 'class': 'input-default w-fit' }}) }}
 </div>
+<div class="[&>*]:block">
+	{{ form_label(form.street_name) }}
+	{{ form_widget(form.street_name, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
+	{{ form_label(form.zip) }}
+	{{ form_widget(form.zip, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
+<div class="[&>*]:block">
+	{{ form_label(form.city) }}
+	{{ form_widget(form.city, { 'attr': { 'class': 'input-default w-fit' }}) }}
+</div>
 <div class="flex flex-row mt-4 space-x-4">
 	{{ form_row(form.submit) }}
 	{{ form_row(form.cancel, { 'attr': {'class': 'button button-neutral' }}) }}

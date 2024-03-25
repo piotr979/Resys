@@ -6,26 +6,85 @@
 {% block body %}
 	<div>
 		<h1 class="page-title font-bold">Dashboard</h1>
-		<div class="flex flex-column md:flex-row content-between justify-between">
+		<div class="dashboard-chart__wrapper">
 			<div>
-				<p class="mt-4 mb-2 font-bold">New customers</p>
-				<canvas id="customers" style="max-height: 200px;"></canvas>
+				<p class="dashboard-chart__title">New customers</p>
+				<canvas id="customers" class="dashboard-chart__graph"></canvas>
 			</div>
 			<div>
-				<p class="mt-4 mb-2 font-bold">New reservations</p>
-				<canvas id="reservations" style="max-height: 200px;"></canvas>
+				<p class="dashboard-chart__title">New reservations</p>
+				<canvas id="reservations" class="dashboard-chart__graph"></canvas>
 			</div>
-			<div></b>
+				<div>
+				<p class="dashboard-chart__title">Average monthly stay</p>
+				<canvas id="average_monthly" class="dashboard-chart__graph"></canvas>
+			</div>
 		</div>
-	{% endblock %}
-	{% block javascripts %}
-		{{ parent() }}
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-const generateChart = (chart, chartLabels, chartData) => {
+		<div class="dashboard-chart__wrapper">
+			<div>
+				<p class="dashboard-chart__title">Income monthly</p>
+				<canvas id="income_monthly" class="dashboard-chart__graph"></canvas>
+			</div>
+			<div>
+				<p class="dashboard-chart__title">People monthly</p>
+				<canvas id="people_monthly" class="dashboard-chart__graph"></canvas>
+			</div>
+			<div>
+				<p class="dashboard-chart__title">Rooms by capacity</p>
+				<canvas id="rooms_capacity" class="dashboard-chart__graph"></canvas>
+			</div>
+		</div>
+		<div>
+			<div class="w-full md:w-1/2 mb-4 text-center mx-auto md:mx-0">
+				<p class="dashboard-chart__title">Regular customers</p>
+				<div class="rounded-lg border border-gray-200 mt-4">
+					<div class="overflow-x-auto rounded-t-lg">
+						<table class=" table-details min-w-full lg:min-width-96 divide-y-2 divide-gray-200 bg-white text-sm overflow-x-auto">
+							<thead class="text-left rtl:text-right">
+								<tr class="h-8">
+									<th class="ps-2">
+										Full name
+									</th>
+									<th class="text-center">
+										Bookings
+									</th>
+								</tr>
+							</thead>
+							<tbody class="divide-y leading-8 divide-gray-200">
+								{% set break = false %}
+								{% for customer in regularCustomers %}
+									{% if not break %}
+										{% if customer.reservationCount == 0 %}
+											{% set break = true %}
+										{% else %}
+											<tr>
+												<td class="font-normal text-left">
+													{{ customer.firstName }}
+													{{ customer.lastName }}
+												</td>
+												<td class="text-center">
+													{{ customer.reservationCount }}
+												</td>
+											</tr>
+										{% endif %}
+									{% endif %}
+								{% endfor %}
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+			{% endblock %}
+			{% block javascripts %}
+				{{ parent() }}
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+				<script>
+					document.addEventListener("DOMContentLoaded", function () {
+const generateChart = (chart, chartLabels, chartData, type = 'bar') => {
 new Chart(chart, {
-type: 'bar',
+type: type,
 responsive: true,
 data: {
 labels: chartLabels,
@@ -70,14 +129,28 @@ maintainAspectRatio: false
 
 const customersChart = document.getElementById('customers');
 const reservationsChart = document.getElementById('reservations');
+const incomeMonthlyChart = document.getElementById('income_monthly');
+const peopleMonthlyChart = document.getElementById('people_monthly');
+const roomsByCapacityChart = document.getElementById('rooms_capacity');
+const averageMonthlyStayChart = document.getElementById('average_monthly');
 const customersMonthlyLabels = JSON.parse('{{ customersMonthlyData | keys | json_encode | raw }}');
 const customersMonthlyData = JSON.parse('{{ customersMonthlyData | json_encode | raw }}');
-
 const reservationsMonthlyLabels = JSON.parse('{{ reservationsMonthlyData | keys | json_encode | raw }}');
 const reservationsMonthlyData = JSON.parse('{{ reservationsMonthlyData | json_encode | raw }}');
-console.log(reservationsMonthlyData);
+const incomeMonthlyLabels = JSON.parse('{{ lastMonthsIncomeData | keys | json_encode | raw }}');
+const incomeMonthlyData = JSON.parse('{{ lastMonthsIncomeData | json_encode | raw }}');
+const peopleMonthlyLabels = JSON.parse('{{ peopleMonthlyData | keys | json_encode | raw }}');
+const peopleMonthlyData = JSON.parse('{{ peopleMonthlyData | json_encode | raw }}');
+const roomsByCapacityData = JSON.parse('{{ roomsByCapacityData | keys | json_encode | raw }}');
+const roomsByCapacityLabels = JSON.parse('{{ roomsByCapacityData | json_encode | raw }}');
+const averageMonthlyStayLabels = JSON.parse('{{ averageMonthlyStayData | keys | json_encode | raw }}');
+const averageMonthlyStayData = JSON.parse('{{  averageMonthlyStayData | json_encode | raw }}');
 generateChart(customersChart, customersMonthlyLabels, customersMonthlyData);
 generateChart(reservationsChart, reservationsMonthlyLabels, reservationsMonthlyData);
+generateChart(averageMonthlyStayChart, averageMonthlyStayLabels, averageMonthlyStayData);
+generateChart(incomeMonthlyChart, incomeMonthlyLabels, incomeMonthlyData);
+generateChart(peopleMonthlyChart, peopleMonthlyLabels, peopleMonthlyData);
+generateChart(roomsByCapacityChart, roomsByCapacityLabels, roomsByCapacityData, 'doughnut');
 });
-		</script>
-	{% endblock %}
+				</script>
+			{% endblock %}

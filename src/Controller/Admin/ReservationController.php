@@ -46,21 +46,20 @@ class ReservationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
           
             $reservation = $form->getData();
+            $children = $reservation->getChildren() == null ? 0 : $reservation->getChildren();
             $avail = $this->entityManager->getRepository(ReservationEntity::class)->checkAnyRoomAvailability(
                 $reservation->getDateFrom(), $reservation->getDateTo(), 
-                $reservation->getAdults(), $reservation->getChildren()
+                $reservation->getAdults(), $children
             );
-            
             if (empty($avail)) {
                 $this->addFlash('notice', 'No room available. Try different date.');
             return $this->redirectToRoute('reservation_new');
             }
-            $total = $reservationMgmt->calcPrice($reservation);
-           // $totalPrice = calcTotalPrice($reservation->getDateFrom(), $reservation->getDateTo());
+            $totalPrice = $reservationMgmt->calcPrice($reservation);
             $reservation->setDateCreated(new \DateTime('now'));
             $room = $this->entityManager->getRepository(RoomEntity::class)->find($avail);
             $reservation->setRoomEntity($room);
-            //dump($reservation);die();
+            $reservation->setPrice($totalPrice);
             $this->entityManager->persist($reservation);
             $this->entityManager->flush();
             return $this->redirectToRoute('reservations_list');

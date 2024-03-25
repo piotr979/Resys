@@ -34,6 +34,15 @@ class CustomerEntity
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_created = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $street_name = null;
+
+    #[ORM\Column(length: 32, nullable: true)]
+    private ?string $zip = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $city = null;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
@@ -130,6 +139,42 @@ class CustomerEntity
     public function setDateCreated(\DateTimeInterface $date_created): static
     {
         $this->date_created = $date_created;
+
+        return $this;
+    }
+
+    public function getStreetName(): ?string
+    {
+        return $this->street_name;
+    }
+
+    public function setStreetName(?string $street_name): static
+    {
+        $this->street_name = $street_name;
+
+        return $this;
+    }
+
+    public function getZip(): ?string
+    {
+        return $this->zip;
+    }
+
+    public function setZip(?string $zip): static
+    {
+        $this->zip = $zip;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

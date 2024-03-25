@@ -27,6 +27,9 @@ class CustomerFormType extends AbstractType
             ->add('lastName')
             ->add('phone', TelType::class)
             ->add('email', EmailType::class)
+            ->add('street_name')
+            ->add('zip')
+            ->add('city')
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'button button-primary',

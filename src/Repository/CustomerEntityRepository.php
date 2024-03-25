@@ -59,29 +59,14 @@ class CustomerEntityRepository extends ServiceEntityRepository
         }
         return($data);
     }
-
-    //    /**
-    //     * @return CustomerEntity[] Returns an array of CustomerEntity objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?CustomerEntity
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function getMostRegularCustomerList() {
+        return $this->createQueryBuilder('c')
+        ->select('c.firstName, c.lastName, COUNT(r.id) AS reservationCount')
+        ->leftJoin('c.reservations', 'r')
+        ->groupBy('c.id')
+        ->orderBy('reservationCount', 'DESC')
+        ->setMaxResults(10)
+        ->getQuery()
+        ->getResult();
+    }
 }

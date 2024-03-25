@@ -39,21 +39,50 @@ class RoomEntityRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+    public function getAllRoomsIds()
+    {
+        $result = $this->createQueryBuilder('r')
+            ->select('r.id')
+            ->getQuery()
+            ->getResult();
+
+        $ids = array_column($result, 'id');
+        return $ids;
+    }
     public function checkAnyRoomAvailability(\DateTime $dateFrom, \DateTime $dateTo, int $adults, int $children)
     {
         $qb = $this->createQueryBuilder('r')
-        ->select('r.id')
-        ->innerJoin('r.reservations', 'res')
-        ->andWhere('')
-        ->distinct()
-        ->getQuery()
-        ->getResult();
-    
+            ->select('r.id')
+            ->innerJoin('r.reservations', 'res')
+            ->andWhere('')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+
         return $qb;
     }
     public function setRoomAvailability(int $id, bool $isTaken, \DateTime $dateFrom, \DateTime $dateTo)
     {
-         
+
+    }
+    public function findRoomsByCapacity(): array
+    {
+        $roomsByCapacity = [];
+
+        // Fetch all rooms
+        $rooms = $this->findAll();
+
+        // Count rooms by capacity
+        $i = 0;
+        foreach ($rooms as $room) {
+            $capacity = $room->getPersons();
+            if (!isset ($roomsByCapacity[$capacity])) {
+                $roomsByCapacity[$i] = 0;
+            }
+            $roomsByCapacity[$i] = $capacity;
+            $i++;
+         }
+        return $roomsByCapacity;
     }
 
 
